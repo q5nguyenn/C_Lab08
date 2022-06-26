@@ -7,8 +7,8 @@
 int login(char name[10], int pass);
 void menu();
 int check(char c);
-int ruttien(int tongtien);
-int chuyenkhoan(int id,int tongtien);
+int ruttien(int *tongtien);
+int chuyenkhoan(int id,int *tongtien);
 void sodu(int tongtien);
 
 int main (void){
@@ -36,7 +36,7 @@ int main (void){
 			}
 			else {
 				printf ("Ban da nhap sai ten hoac mat khau!\nMoi ban nhap lai!\n");
-			}	
+			}		
 		}
     } while (1);
     
@@ -47,11 +47,11 @@ int main (void){
 		menu();
 		scanf("%d", &chon);
 		switch (chon){
-		case 1: tongtien = ruttien(tongtien); break;
+		case 1: ruttien(&tongtien); break;
 		case 2: {
 			printf ("Nhap vao STK can chuyen: ");
 			scanf ("%d", &tk);
-			tongtien = chuyenkhoan(tk, tongtien);break;
+			chuyenkhoan(tk, &tongtien);break;
 		}
 		case 3: sodu(tongtien);break;
 		case 4:{
@@ -63,7 +63,6 @@ int main (void){
 		printf ("Ban co muon tiep tuc khong?\nNhap y de tiep tuc ");
 		fflush(stdin);
 		c = getchar ();
-		system ("cls");
 	} while (check(c) == 1);
 }
 
@@ -83,35 +82,33 @@ void menu(){
 	printf ("****************************\n");
 }
 
-int ruttien(int tongtien){
+int ruttien(int *tongtien){
 	int num;
 	do {
 		printf ("Nhap vao so tien can rut: ");
 		scanf ("%d", &num);
 		if (num % 50000 == 0 && num < 30000000 && num >= 50){
 		printf ("Ban da rut %dvnd", num);
-		tongtien = tongtien - num;
-		printf ("\nSo tien con lai trong tai khoan la: %dvnd\n",tongtien);
+		*tongtien = *tongtien - num;
+		printf ("\nSo tien con lai trong tai khoan la: %dvnd\n",*tongtien);
 	    break;  
 		}
 		else
 			printf ("So tien phai la boi cua 50.000 va nho hon 3.000.000\n");
 	} while (1);
-	return tongtien;
 }
 
-int chuyenkhoan(int id,int tongtien){
+int chuyenkhoan(int id,int *tongtien){
 	int num;
 	printf ("Nhap vao so tien can chuyen: ");
 	scanf ("%d", &num);
-	tongtien = tongtien - num;
+	*tongtien = *tongtien - num;
 	printf ("Ban da chuyen %dvnd den STK %d\n", num, id);
-	printf ("So tien con lai trong tai khoan la %dvnd\n", tongtien);
-	return (tongtien);	
+	printf ("So tien con lai trong tai khoan la %dvnd\n", *tongtien);	
 }
 
 void sodu(int tongtien){
-	printf ("So du hien tai la: %d\n", tongtien);
+	printf ("So du hien tai la: %d\n", tongtien);	
 }
 
 int check(char c){
